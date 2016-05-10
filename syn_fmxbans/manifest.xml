@@ -179,7 +179,7 @@
 				$qresult[] = $qresult_elem;
 			
 			//sorting, because mysql "max_sort_length" is not always enough and "order by" may not work properly
-			usort($qresult, create_function('$a, $b', "return strcmp(\$a['hwid'], \$b['hwid']);"));
+			usort($qresult, create_function('$a, $b', "return strcmp(\$a['hwid'].'*'.\$a['login'], \$b['hwid'].'*'.\$b['login']);"));
 			
 			$items = array();
 			
@@ -323,7 +323,7 @@
 				$qresult[] = $qresult_elem;
 			
 			//sorting, because mysql "max_sort_length" is not always enough and "order by" may not work properly
-			usort($qresult, create_function('$a, $b', "return strcmp(\$a['hwid'], \$b['hwid']);"));
+			usort($qresult, create_function('$a, $b', "return strcmp(\$a['hwid'].'*'.\$a['login'], \$b['hwid'].'*'.\$b['login']);"));
 			
 			$items = array();
 			
@@ -445,7 +445,7 @@
 				$qresult1[] = $qresult_elem1;
 			
 			//sorting, because mysql "max_sort_length" is not always enough and "order by" may not work properly
-			usort($qresult1, create_function('$a, $b', "return strcmp(\$a['hwid'], \$b['hwid']);"));
+			usort($qresult1, create_function('$a, $b', "return strcmp(\$a['login'], \$b['login']);"));
 			
 			$items1 = array();
 			
@@ -502,7 +502,7 @@
 				$qresult2[] = $qresult_elem2;
 			
 			//sorting, because order by is not always correctly works
-			usort($qresult2, create_function('$a, $b', "return strcmp(\$a['hwid'], \$b['hwid']);"));
+			usort($qresult2, create_function('$a, $b', "return strcmp(\$a['hwid'].'*'.\$a['login'], \$b['hwid'].'*'.\$b['login']);"));
 			
 			$items2 = array();
 			
