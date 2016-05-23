@@ -12,17 +12,19 @@ if (!defined('FORUM')) die();
 
 
 $lang_syn_fmxbans = array(
-	'Hardware bans' => 'Баны по железу',
-	'New hardware of banned people' => 'Новое оборудование забаненных',
-	'Synonims' => 'Синонимы',
-	'Hardware' => 'Оборудование',
+	'hardware_bans' => 'Баны по железу',
+	'new_hardware' => 'Новое оборудование забаненных',
+	'synonims' => 'Синонимы',
+	'hardware' => 'Оборудование',
 	'banned' => 'заблокировано',
 	'unbanned' => 'разблокировано',
-	'Commands' => 'Команды',
-	'Ban' => 'Забанить',
-	'Unban' => 'Разбанить',
-	'Moders see multiaccounts' => 'Модеры видят мультиакки',
-	'Allow moders to see user multiaccounts' => 'Разрешить модераторам видеть синонимы аккаунтов пользователей'
+	'commands' => 'Команды',
+	'ban' => 'Забанить',
+	'unban' => 'Разбанить',
+	'show_multiacc' => 'Модеры видят мультиакки',
+	'show_multiacc_desc' => 'Разрешить модераторам видеть синонимы аккаунтов пользователей',
+	'ignore_com' => 'Игнорировать COM',
+	'ignore_com_desc' => 'He использовать COM-HWID для составления списка синонимов',
 );
 
 ?>

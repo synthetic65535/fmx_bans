@@ -22,11 +22,13 @@
 	<maxtestedon>1.4.4</maxtestedon>
 	
 	<install><![CDATA[
-		forum_config_add('o_syn_fmxbans_moders_see_multiacc', '0');
+		forum_config_add('o_syn_fmxbans_moders_see_multiacc', '1');
+		forum_config_add('o_syn_fmxbans_ignore_com_hwid', '1');
 	]]></install>
 	
 	<uninstall><![CDATA[
 		forum_config_remove('o_syn_fmxbans_moders_see_multiacc');
+		forum_config_remove('o_syn_fmxbans_ignore_com_hwid');
 	]]></uninstall>
 	
 	<hooks>
@@ -54,7 +56,7 @@
 				<!-- opt start -->
 				<fieldset class="mf-set set<?php echo ++$forum_page['item_count'] ?>">
 					
-					<legend><span><?php echo $lang_syn_fmxbans['Moders see multiaccounts'] ?></span></legend>
+					<legend><span><?php echo $lang_syn_fmxbans['show_multiacc'] ?></span></legend>
 					<div class="mf-box">
 						<div class="mf-item">
 							<span class="fld-input">
@@ -64,7 +66,25 @@
 									<?php if ($forum_config['o_syn_fmxbans_moders_see_multiacc'] == '1') echo ' checked="checked"'; ?> />
 							</span>
 							<label for="fld<?php echo $forum_page['fld_count'] ?>">
-								<?php echo $lang_syn_fmxbans['Allow moders to see user multiaccounts'] ?>
+								<?php echo $lang_syn_fmxbans['show_multiacc_desc'] ?>
+							</label>
+						</div>
+				</fieldset>
+				<!-- opt end -->
+				<!-- opt start -->
+				<fieldset class="mf-set set<?php echo ++$forum_page['item_count'] ?>">
+					
+					<legend><span><?php echo $lang_syn_fmxbans['ignore_com'] ?></span></legend>
+					<div class="mf-box">
+						<div class="mf-item">
+							<span class="fld-input">
+								<input type="checkbox"
+									id="fld<?php echo ++$forum_page['fld_count'] ?>"
+									name="form[syn_fmxbans_ignore_com_hwid]" value="1"
+									<?php if ($forum_config['o_syn_fmxbans_ignore_com_hwid'] == '1') echo ' checked="checked"'; ?> />
+							</span>
+							<label for="fld<?php echo $forum_page['fld_count'] ?>">
+								<?php echo $lang_syn_fmxbans['ignore_com_desc'] ?>
 							</label>
 						</div>
 				</fieldset>
@@ -75,6 +95,7 @@
 	
 	<hook id="aop_features_validation"><![CDATA[
 			$form['syn_fmxbans_moders_see_multiacc'] = (!isset($form['syn_fmxbans_moders_see_multiacc']) || (int) $form['syn_fmxbans_moders_see_multiacc'] <= 0) ? '0' : '1';
+			$form['syn_fmxbans_ignore_com_hwid'] = (!isset($form['syn_fmxbans_ignore_com_hwid']) || (int) $form['syn_fmxbans_ignore_com_hwid'] <= 0) ? '0' : '1';
 		]]></hook>
 	
 	
@@ -124,7 +145,7 @@
 			$forum_db->query_build($query) or error(__FILE__, __LINE__);
 			
 			//TODO: message
-			message($lang_syn_fmxbans['Hardware'].' "'.$hwid.'" '.(($action == 'fmxban') ? $lang_syn_fmxbans['banned'] : $lang_syn_fmxbans['unbanned']).'.');
+			message($lang_syn_fmxbans['hardware'].' "'.$hwid.'" '.(($action == 'fmxban') ? $lang_syn_fmxbans['banned'] : $lang_syn_fmxbans['unbanned']).'.');
 		}
 		
 		if ($action == 'fmxbans' && $forum_user['g_id'] == FORUM_ADMIN)
@@ -150,7 +171,7 @@
 			
 			if ($forum_user['g_id'] == FORUM_ADMIN)
 				$forum_page['crumbs'][] = array($lang_admin_common['Users'], forum_link($forum_url['admin_users']));
-			$forum_page['crumbs'][] = $lang_syn_fmxbans['Hardware bans'];
+			$forum_page['crumbs'][] = $lang_syn_fmxbans['hardware_bans'];
 			
 			define('FORUM_PAGE_SECTION', 'users');
 			define('FORUM_PAGE', 'admin-fmxbans');
@@ -166,7 +187,7 @@
 				'SELECT'	=> 'h.login, h.hwid',
 				'FROM'		=> 'hwids AS h',
 				'WHERE'		=> 'h.banned = 1',
-				'ORDER BY'	=> 'h.hwid ASC',
+				'ORDER BY'	=> 'h.hwid ASC, h.login ASC',
 				'PARAMS'	=> array('NO_PREFIX' => 1)
 			);
 			
@@ -220,7 +241,7 @@
 <div class="main-content">
 <div class="ct-group">
 <table class="pun_pm_list">
-<tr><th><?php echo $lang_syn_fmxbans['Hardware'] ?></th><th style="width:40%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['Commands'] ?></th></tr><?php
+<tr><th><?php echo $lang_syn_fmxbans['hardware'] ?></th><th style="width:40%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['commands'] ?></th></tr><?php
 
 			if (!defined('FORUM_EXTERN_MAX_SUBJECT_LENGTH'))
 				define('FORUM_EXTERN_MAX_SUBJECT_LENGTH', 49);
@@ -246,7 +267,7 @@
 					$i++;
 				}
 ?></td>
-<td><a href="<?php echo $item['unban_link']?>"><?php echo $lang_syn_fmxbans['Unban'] ?></a><br /></td>
+<td><a href="<?php echo $item['unban_link']?>"><?php echo $lang_syn_fmxbans['unban'] ?></a><br /></td>
 </tr>
 <?php } ?>
 </table>
@@ -285,7 +306,7 @@
 			
 			if ($forum_user['g_id'] == FORUM_ADMIN)
 				$forum_page['crumbs'][] = array($lang_admin_common['Users'], forum_link($forum_url['admin_users']));
-			$forum_page['crumbs'][] = $lang_syn_fmxbans['New hardware of banned people'];
+			$forum_page['crumbs'][] = $lang_syn_fmxbans['new_hardware'];
 
 			define('FORUM_PAGE_SECTION', 'users');
 			define('FORUM_PAGE', 'admin-fmxnewhwids');
@@ -309,7 +330,7 @@
 					)
 				),
 				'WHERE'		=> '(h.banned = 0 AND hh.banned = 1)',
-				'ORDER BY'	=> 'h.hwid ASC',
+				'ORDER BY'	=> 'h.hwid ASC, h.login ASC',
 				'GROUP BY'	=> 'h.hwid, h.login',
 				'PARAMS'	=> array('NO_PREFIX' => 1)
 			);
@@ -363,7 +384,7 @@
 	?><div class="main-content">
 <div class="ct-group">
 <table class="pun_pm_list">
-<tr><th><?php echo $lang_syn_fmxbans['Hardware'] ?></th><th style="width:40%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['Commands'] ?></th></tr><?php
+<tr><th><?php echo $lang_syn_fmxbans['hardware'] ?></th><th style="width:40%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['commands'] ?></th></tr><?php
 		
 			if (!defined('FORUM_EXTERN_MAX_SUBJECT_LENGTH'))
 				define('FORUM_EXTERN_MAX_SUBJECT_LENGTH', 49);
@@ -389,7 +410,7 @@
 					$i++;
 				}
 ?></td>
-<td><a href="<?php echo $item['ban_link']?>"><?php echo $lang_syn_fmxbans['Ban'] ?></a><br /></td>
+<td><a href="<?php echo $item['ban_link']?>"><?php echo $lang_syn_fmxbans['ban'] ?></a><br /></td>
 </tr>
 <?php } ?>
 </table>
@@ -427,7 +448,7 @@
 				'JOINS'		=> array(
 					array(
 						'JOIN'	=> 'hwids AS hh',
-						'ON'	=> '(h.hwid = hh.hwid AND NOT (hh.hwid LIKE "%UNKNOWN%"))'
+						'ON'	=> '(h.hwid = hh.hwid AND NOT (hh.hwid LIKE "%UNKNOWN%")'.($forum_config['o_syn_fmxbans_ignore_com_hwid'] == '1' ? ' AND NOT (hh.hwid LIKE "COM%")' : '').')'
 					)
 				),
 				'WHERE'		=> '(hh.login = "'.$user['username'].'" AND NOT (h.login = "'.$user['username'].'"))',
@@ -459,7 +480,7 @@
 ?>
 <div class="ct-set data-set set<?php echo ++$forum_page['item_count'] ?>">
 <div class="ct-box data-box">
-<h4 class="ct-legend hn"><span><?php echo $lang_syn_fmxbans['Synonims'] ?></span></h4>
+<h4 class="ct-legend hn"><span><?php echo $lang_syn_fmxbans['synonims'] ?></span></h4>
 <ul class="data-box">
 <?php
 			
@@ -489,7 +510,7 @@
 						'ON'	=> '(hh.hwid = h.hwid AND hh.login = "'.$user['username'].'" AND NOT (h.hwid LIKE "%UNKNOWN%"))'
 					)
 				),
-				'ORDER BY'	=> 'h.hwid ASC',
+				'ORDER BY'	=> 'h.hwid ASC, h.login ASC',
 				'PARAMS'	=> array('NO_PREFIX' => 1)
 			);
 			
@@ -550,10 +571,10 @@
 ?>
 <div class="ct-set data-set set<?php echo ++$forum_page['item_count'] ?>">
 <div class="ct-box data-box">
-<h4 class="ct-legend hn"><span><?php echo $lang_syn_fmxbans['Hardware'] ?></span></h4>
+<h4 class="ct-legend hn"><span><?php echo $lang_syn_fmxbans['hardware'] ?></span></h4>
 <ul class="data-box">
 <table class="pun_pm_list">
-<tr><th><?php echo $lang_syn_fmxbans['Hardware'] ?></th><th style="width:25%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['Commands'] ?></th></tr><?php
+<tr><th><?php echo $lang_syn_fmxbans['hardware'] ?></th><th style="width:25%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['commands'] ?></th></tr><?php
 			
 			if (!defined('FORUM_EXTERN_MAX_SUBJECT_LENGTH'))
 				define('FORUM_EXTERN_MAX_SUBJECT_LENGTH', 40);
@@ -580,9 +601,9 @@
 ?></td><?php
 				if ($item2['banned'] == 0) 
 				{
-?><td><a href="<?php echo $item2['ban_link'] ?>"><?php echo $lang_syn_fmxbans['Ban'] ?></a><br /></td><?php
+?><td><a href="<?php echo $item2['ban_link'] ?>"><?php echo $lang_syn_fmxbans['ban'] ?></a><br /></td><?php
 				} else {
-?><td><a href="<?php echo $item2['unban_link']?>"><?php echo $lang_syn_fmxbans['Unban'] ?></a><br /></td><?php
+?><td><a href="<?php echo $item2['unban_link']?>"><?php echo $lang_syn_fmxbans['unban'] ?></a><br /></td><?php
 				}?>
 </tr>
 <?php } ?>
@@ -609,8 +630,8 @@
 						}
 					}
 					
-					$forum_page['admin_submenu']['fmxbans'] = '<li class="'.((FORUM_PAGE == 'admin-fmxbans') ? 'active' : 'normal').((empty($forum_page['admin_submenu'])) ? ' first-item' : '').'"><a href="/misc.php?action=fmxbans">'.$lang_syn_fmxbans['Hardware bans'].'</a></li>';
-					$forum_page['admin_submenu']['fmxnewhwids'] = '<li class="'.((FORUM_PAGE == 'admin-fmxnewhwids') ? 'active' : 'normal').((empty($forum_page['admin_submenu'])) ? ' first-item' : '').'"><a href="/misc.php?action=fmxnewhwids">'.$lang_syn_fmxbans['New hardware of banned people'].'</a></li>';
+					$forum_page['admin_submenu']['fmxbans'] = '<li class="'.((FORUM_PAGE == 'admin-fmxbans') ? 'active' : 'normal').((empty($forum_page['admin_submenu'])) ? ' first-item' : '').'"><a href="/misc.php?action=fmxbans">'.$lang_syn_fmxbans['hardware_bans'].'</a></li>';
+					$forum_page['admin_submenu']['fmxnewhwids'] = '<li class="'.((FORUM_PAGE == 'admin-fmxnewhwids') ? 'active' : 'normal').((empty($forum_page['admin_submenu'])) ? ' first-item' : '').'"><a href="/misc.php?action=fmxnewhwids">'.$lang_syn_fmxbans['new_hardware'].'</a></li>';
 				}
 			}
         ]]></hook>

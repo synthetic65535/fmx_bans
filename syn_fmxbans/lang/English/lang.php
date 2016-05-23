@@ -12,17 +12,19 @@ if (!defined('FORUM')) die();
 
 
 $lang_syn_fmxbans = array(
-	'Hardware bans' => 'Hardware bans',
-	'New hardware of banned people' => 'New hardware of banned people',
-	'Synonims' => 'Synonims',
-	'Hardware' => 'Hardware',
+	'hardware_bans' => 'Hardware bans',
+	'new_hardware' => 'New hardware of banned people',
+	'synonims' => 'Synonims',
+	'hardware' => 'Hardware',
 	'banned' => 'banned',
 	'unbanned' => 'unbanned',
-	'Commands' => 'Commands',
-	'Ban' => 'Ban',
-	'Unban' => 'Unban',
-	'Moders see multiaccounts' => 'Moders see multiaccs',
-	'Allow moders to see user multiaccounts' => 'Allow moders to see user multiaccounts'
+	'commands' => 'Commands',
+	'ban' => 'Ban',
+	'unban' => 'Unban',
+	'show_multiacc' => 'Moders see multiaccs',
+	'show_multiacc_desc' => 'Allow moders to see user multiaccounts',
+	'ignore_com' => 'Ignore COM',
+	'ignore_com_desc' => 'Do not user COM-HWID to generate synonims',
 );
 
 ?>
