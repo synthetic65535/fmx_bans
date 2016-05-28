@@ -103,7 +103,15 @@
 		
 		if (($action == 'fmxlogin') && (($forum_user['g_id'] == FORUM_ADMIN) || (($forum_user['g_moderator'] == '1') && ($forum_config['o_syn_fmxbans_moders_see_multiacc'] == '1'))) && isset($_GET['login']))
 		{
-			$userlogin = $_GET['login'];
+			if (!isset($lang_syn_fmxbans)) {
+				if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'/lang.php')) {
+					require $ext_info['path'].'/lang/'.$forum_user['language'].'/lang.php';
+				} else {
+					require $ext_info['path'].'/lang/English/lang.php';
+				}
+			}
+			
+			$userlogin = filter_input(INPUT_GET, 'login', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 			
 			$query = array(
 				'SELECT'	=> 'u.id',
@@ -114,7 +122,11 @@
 			
 			$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
 			$cur = $forum_db->fetch_assoc($result);
-			redirect(forum_link($forum_url['user'], $cur['id']));
+			if (isset($cur['id'])) {
+				redirect(forum_link($forum_url['user'], $cur['id']));
+			} else {
+				message($lang_syn_fmxbans['user_not_found']);
+			}
 		}
 		
 		if (($action == 'fmxban' || $action == 'fmxunban') && $forum_user['g_id'] == FORUM_ADMIN && isset($_GET['hwid']))
@@ -126,8 +138,8 @@
 					require $ext_info['path'].'/lang/English/lang.php';
 				}
 			}
-
-			$hwid = $_GET['hwid'];
+			
+			$hwid = filter_input(INPUT_GET, 'hwid', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 			
 			$query = array(
 				'UPDATE'	=> 'topics',
@@ -496,7 +508,7 @@
 </ul>
 </div>
 </div>
-<?php 
+<?php
 		}
 		
 		if ($forum_user['g_id'] == FORUM_ADMIN)
@@ -616,9 +628,9 @@
 	]]></hook>
 	
 	
-	    <hook id="ca_fn_generate_admin_menu_new_sublink"><![CDATA[
-	    	
-		    if ($forum_user['g_id'] == FORUM_ADMIN)
+		<hook id="ca_fn_generate_admin_menu_new_sublink"><![CDATA[
+			
+			if ($forum_user['g_id'] == FORUM_ADMIN)
 			{
 				if (FORUM_PAGE_SECTION == 'users')
 				{
@@ -634,7 +646,7 @@
 					$forum_page['admin_submenu']['fmxnewhwids'] = '<li class="'.((FORUM_PAGE == 'admin-fmxnewhwids') ? 'active' : 'normal').((empty($forum_page['admin_submenu'])) ? ' first-item' : '').'"><a href="/misc.php?action=fmxnewhwids">'.$lang_syn_fmxbans['new_hardware'].'</a></li>';
 				}
 			}
-        ]]></hook>
+		]]></hook>
 	
 	
 	</hooks>

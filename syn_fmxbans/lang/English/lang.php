@@ -25,6 +25,7 @@ $lang_syn_fmxbans = array(
 	'show_multiacc_desc' => 'Allow moders to see user multiaccounts',
 	'ignore_com' => 'Ignore COM',
 	'ignore_com_desc' => 'Do not user COM-HWID to generate synonims',
+	'user_not_found' => 'User not found'
 );
 
 ?>
