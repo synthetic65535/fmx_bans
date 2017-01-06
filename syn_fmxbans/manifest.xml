@@ -142,12 +142,6 @@
 			$hwid = filter_input(INPUT_GET, 'hwid', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 			
 			$query = array(
-				'UPDATE'	=> 'topics',
-				'SET'		=> 'sticky=0',
-				'WHERE'		=> 'id='.$unstick.' AND forum_id='.$fid
-			);
-			
-			$query = array(
 				'UPDATE'	=> 'hwids',
 				'SET'		=> 'banned='.(($action == 'fmxban') ? '1' : '0'),
 				'WHERE'		=> 'hwid = "'.$hwid.'"',
@@ -158,6 +152,31 @@
 			
 			//TODO: message
 			message($lang_syn_fmxbans['hardware'].' "'.$hwid.'" '.(($action == 'fmxban') ? $lang_syn_fmxbans['banned'] : $lang_syn_fmxbans['unbanned']).'.');
+		}
+		
+		if (($action == 'fmxremove') && $forum_user['g_id'] == FORUM_ADMIN && isset($_GET['hwid']) && isset($_GET['login']))
+		{
+			if (!isset($lang_syn_fmxbans)) {
+				if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'/lang.php')) {
+					require $ext_info['path'].'/lang/'.$forum_user['language'].'/lang.php';
+				} else {
+					require $ext_info['path'].'/lang/English/lang.php';
+				}
+			}
+			
+			$hwid = filter_input(INPUT_GET, 'hwid', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+			$userlogin = filter_input(INPUT_GET, 'login', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+			
+			$query = array(
+				'DELETE'	=> 'hwids',
+				'WHERE'		=> '(hwid = "'.$hwid.'") AND (login = "'.$userlogin.'")',
+				'PARAMS'	=> array('NO_PREFIX' => 1)
+			);
+			
+			$forum_db->query_build($query) or error(__FILE__, __LINE__);
+			
+			//TODO: message
+			message($lang_syn_fmxbans['removed']);
 		}
 		
 		if ($action == 'fmxbans' && $forum_user['g_id'] == FORUM_ADMIN)
@@ -327,11 +346,9 @@
 			// START SUBST - <!-- forum_main -->
 			ob_start();
 
-			// Setup the feed
 			$items = array();
 
-			// Fetch $show topics
-			
+			// Fetch
 			$query = array(
 				'SELECT'	=> 'h.login, h.hwid',
 				'FROM'		=> 'hwids AS h',
@@ -547,7 +564,8 @@
 					'hwid'			=>	$cur2['hwid'],
 					'banned'		=>	$cur2['banned'],
 					'ban_link'		=>	'/misc.php?action=fmxban&hwid='.$cur2['hwid'],
-					'unban_link'	=>	'/misc.php?action=fmxunban&hwid='.$cur2['hwid']
+					'unban_link'	=>	'/misc.php?action=fmxunban&hwid='.$cur2['hwid'],
+					'remove_link'	=>	'/misc.php?action=fmxremove&hwid='.$cur2['hwid'].'&login='.$user['username']
 				);
 				
 				if ($filling_item['hwid'] == $new_item['hwid'])
@@ -571,7 +589,8 @@
 						'hwid'			=>	$new_item['hwid'],
 						'banned'		=>	$new_item['banned'],
 						'ban_link'		=>	$new_item['ban_link'],
-						'unban_link'	=>	$new_item['unban_link']
+						'unban_link'	=>	$new_item['unban_link'],
+						'remove_link'	=>	$new_item['remove_link']
 					);
 					
 				}
@@ -613,9 +632,9 @@
 ?></td><?php
 				if ($item2['banned'] == 0) 
 				{
-?><td><a href="<?php echo $item2['ban_link'] ?>"><?php echo $lang_syn_fmxbans['ban'] ?></a><br /></td><?php
+?><td><div><a href="<?php echo $item2['ban_link'] ?>"><?php echo $lang_syn_fmxbans['ban'] ?></a></div><div><a href="<?php echo $item2['remove_link']?>"><?php echo $lang_syn_fmxbans['remove'] ?></a></div></td><?php
 				} else {
-?><td><a href="<?php echo $item2['unban_link']?>"><?php echo $lang_syn_fmxbans['unban'] ?></a><br /></td><?php
+?><td><div><a href="<?php echo $item2['unban_link']?>"><?php echo $lang_syn_fmxbans['unban'] ?></a></div><div><a href="<?php echo $item2['remove_link']?>"><?php echo $lang_syn_fmxbans['remove'] ?></a></div></td><?php
 				}?>
 </tr>
 <?php } ?>
