@@ -271,7 +271,7 @@
 			$items[] = $filling_item; ?>
 <div class="main-content">
 <div class="ct-group">
-<table class="pun_pm_list">
+<table>
 <tr><th><?php echo $lang_syn_fmxbans['hardware'] ?></th><th style="width:40%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['commands'] ?></th></tr><?php
 
 			if (!defined('FORUM_EXTERN_MAX_SUBJECT_LENGTH'))
@@ -412,7 +412,7 @@
 	
 	?><div class="main-content">
 <div class="ct-group">
-<table class="pun_pm_list">
+<table>
 <tr><th><?php echo $lang_syn_fmxbans['hardware'] ?></th><th style="width:40%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['commands'] ?></th></tr><?php
 		
 			if (!defined('FORUM_EXTERN_MAX_SUBJECT_LENGTH'))
@@ -604,7 +604,7 @@
 <div class="ct-box data-box">
 <h4 class="ct-legend hn"><span><?php echo $lang_syn_fmxbans['hardware'] ?></span></h4>
 <ul class="data-box">
-<table class="pun_pm_list">
+<table>
 <tr><th><?php echo $lang_syn_fmxbans['hardware'] ?></th><th style="width:25%;"><?php echo $lang_common['User list'] ?></th><th style="width:15%;"><?php echo $lang_syn_fmxbans['commands'] ?></th></tr><?php
 			
 			if (!defined('FORUM_EXTERN_MAX_SUBJECT_LENGTH'))
@@ -632,9 +632,9 @@
 ?></td><?php
 				if ($item2['banned'] == 0) 
 				{
-?><td><div><a href="<?php echo $item2['ban_link'] ?>"><?php echo $lang_syn_fmxbans['ban'] ?></a></div><div><a href="<?php echo $item2['remove_link']?>"><?php echo $lang_syn_fmxbans['remove'] ?></a></div></td><?php
+?><td><div style="padding:0;"><a href="<?php echo $item2['ban_link'] ?>"><?php echo $lang_syn_fmxbans['ban'] ?></a></div><div style="padding:0;"><a href="<?php echo $item2['remove_link']?>"><?php echo $lang_syn_fmxbans['remove'] ?></a></div></td><?php
 				} else {
-?><td><div><a href="<?php echo $item2['unban_link']?>"><?php echo $lang_syn_fmxbans['unban'] ?></a></div><div><a href="<?php echo $item2['remove_link']?>"><?php echo $lang_syn_fmxbans['remove'] ?></a></div></td><?php
+?><td><div style="padding:0;"><a href="<?php echo $item2['unban_link']?>"><?php echo $lang_syn_fmxbans['unban'] ?></a></div><div style="padding:0;"><a href="<?php echo $item2['remove_link']?>"><?php echo $lang_syn_fmxbans['remove'] ?></a></div></td><?php
 				}?>
 </tr>
 <?php } ?>
