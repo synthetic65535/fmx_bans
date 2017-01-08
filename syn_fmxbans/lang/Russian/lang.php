@@ -27,7 +27,9 @@ $lang_syn_fmxbans = array(
 	'ignore_com_desc' => 'He использовать COM-HWID для составления списка синонимов',
 	'user_not_found' => 'Пользователь не найден',
 	'removed' => 'Запись удалена',
-	'remove' => 'Удалить'
+	'remove' => 'Удалить',
+	'unique' => 'Уникален',
+	'unknown' => 'Незивестно'
 );
 
 ?>

@@ -480,7 +480,7 @@
 						'ON'	=> '(h.hwid = hh.hwid AND NOT (hh.hwid LIKE "%UNKNOWN%")'.($forum_config['o_syn_fmxbans_ignore_com_hwid'] == '1' ? ' AND NOT (hh.hwid LIKE "COM%")' : '').')'
 					)
 				),
-				'WHERE'		=> '(hh.login = "'.$user['username'].'" AND NOT (h.login = "'.$user['username'].'"))',
+				'WHERE'		=> 'hh.login = "'.$user['username'].'"',
 				'GROUP BY'	=> 'h.login',
 				'ORDER BY'	=> 'h.login ASC',
 				'PARAMS'	=> array('NO_PREFIX' => 1)
@@ -499,12 +499,21 @@
 			
 			$items1 = array();
 			
+			$own_login_found = false;
+			$other_login_found = false;
+			
 			foreach ($qresult1 as $cur1)
 			{
-				$items1[] = array(
-				'username' => $cur1['login'],
-				'username_link'	=>	'/misc.php?action=fmxlogin&login='.$cur1['login'],
-				);
+				if ($user['username'] == $cur1['login'])
+				{
+					$own_login_found = true;
+				} else {
+					$other_login_found = true;
+					$items1[] = array(
+					'username' => $cur1['login'],
+					'username_link'	=>	'/misc.php?action=fmxlogin&login='.$cur1['login'],
+					);
+				}
 			}
 ?>
 <div class="ct-set data-set set<?php echo ++$forum_page['item_count'] ?>">
@@ -513,15 +522,28 @@
 <ul class="data-box">
 <?php
 			
-			$i = 0;
-			$len = count($items1);
-			
-			if (count($items1) > 0)
-			foreach ($items1 as $user_temp) 
+			if ($other_login_found)
 			{
-				?><a href="<?php echo $user_temp['username_link']?> "><?php echo $user_temp['username'] ?></a><?php if ($i != $len - 1) echo ', ';
-				$i++;
-			} ?>
+				
+				$i = 0;
+				$len = count($items1);
+				
+				if (count($items1) > 0)
+				foreach ($items1 as $user_temp) 
+				{
+					?><a href="<?php echo $user_temp['username_link']?> "><?php echo $user_temp['username'] ?></a><?php if ($i != $len - 1) echo ', ';
+					$i++;
+				}
+				
+			} else {
+				if ($own_login_found)
+				{
+					echo $lang_syn_fmxbans['unique'];
+				} else {
+					echo $lang_syn_fmxbans['unknown'];
+				}
+			}
+			?>
 </ul>
 </div>
 </div>

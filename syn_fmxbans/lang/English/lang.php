@@ -27,7 +27,9 @@ $lang_syn_fmxbans = array(
 	'ignore_com_desc' => 'Do not user COM-HWID to generate synonims',
 	'user_not_found' => 'User not found',
 	'removed' => 'Hardware connection removed',
-	'remove' => 'Remove'
+	'remove' => 'Remove',
+	'unique' => 'Unique',
+	'unknown' => 'Unknown'
 );
 
 ?>
