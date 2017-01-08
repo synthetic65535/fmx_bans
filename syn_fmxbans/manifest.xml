@@ -292,9 +292,9 @@
 				$len = count($item['users']);
 				
 				if (count($item['users']) > 0)
-				foreach ($item['users'] as $user) 
+				foreach ($item['users'] as $user_temp) 
 				{
-					?><a href="<?php echo $user['username_link']?> "><?php echo $user['username'] ?></a><?php if ($i != $len - 1) echo ', ';
+					?><a href="<?php echo $user_temp['username_link']?> "><?php echo $user_temp['username'] ?></a><?php if ($i != $len - 1) echo ', ';
 					$i++;
 				}
 ?></td>
@@ -433,9 +433,9 @@
 				$len = count($item['users']);
 				
 				if (count($item['users']) > 0)
-				foreach ($item['users'] as $user) 
+				foreach ($item['users'] as $user_temp) 
 				{
-					?><a href="<?php echo $user['username_link']?> "><?php echo $user['username'] ?></a><?php if ($i != $len - 1) echo ', ';
+					?><a href="<?php echo $user_temp['username_link']?> "><?php echo $user_temp['username'] ?></a><?php if ($i != $len - 1) echo ', ';
 					$i++;
 				}
 ?></td>
@@ -517,9 +517,9 @@
 			$len = count($items1);
 			
 			if (count($items1) > 0)
-			foreach ($items1 as $user1) 
+			foreach ($items1 as $user_temp) 
 			{
-				?><a href="<?php echo $user1['username_link']?> "><?php echo $user1['username'] ?></a><?php if ($i != $len - 1) echo ', ';
+				?><a href="<?php echo $user_temp['username_link']?> "><?php echo $user_temp['username'] ?></a><?php if ($i != $len - 1) echo ', ';
 				$i++;
 			} ?>
 </ul>
@@ -624,9 +624,9 @@
 				$len = count($item2['users']);
 				
 				if (count($item2['users']) > 0)
-				foreach ($item2['users'] as $user) 
+				foreach ($item2['users'] as $user_temp) 
 				{
-					?><a href="<?php echo $user['username_link']?> "><?php echo $user['username'] ?></a><?php if ($i != $len - 1) echo ', ';
+					?><a href="<?php echo $user_temp['username_link']?> "><?php echo $user_temp['username'] ?></a><?php if ($i != $len - 1) echo ', ';
 					$i++;
 				}
 ?></td><?php
